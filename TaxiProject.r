@@ -1,5 +1,7 @@
 # BASIC DATA UNDERSTANDING
 
+cat("BASIC DATA METRICS")
+
 install.packages("tidyverse")
 library(tidyverse)
 inputData <- read.csv("chicago_taxi.csv")
@@ -285,22 +287,27 @@ monte_carlo_tips <- mc_predictions
 hist(monte_carlo_tips, xlim=c(0,20), breaks = c(0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20))
 hist(credit_data_hist$tips, xlim=c(0,20), breaks = c(0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20))
 
-# BAYES THEOREM
+mean(monte_carlo_tips)
+sd(monte_carlo_tips)
+skewness(monte_carlo_tips)
+mean(credit_data_hist$tips)
+sd(credit_data_hist$tips)
+skewness(credit_data_hist$tips)
 
 cat("BAYES THEOREM ANALYSIS")
 
 library(dplyr)
-chicago_taxi$total <- round(chicago_taxi$total, 0)
-chicago_taxi$tips <- round(chicago_taxi$tips, 0)
+data$total <- round(data$total, 0)
+data$tips <- round(data$tips, 0)
 tips_threshold <- 5
-prior_total_high <- sum(chicago_taxi$total > 50) / nrow(chicago_taxi)
+prior_total_high <- sum(data$total > 50) / nrow(data)
 prior_total_low <- 1 - prior_total_high
-prior_tips_low <- sum(chicago_taxi$tips <= tips_threshold) / nrow(chicago_taxi)
+prior_tips_low <- sum(data$tips <= tips_threshold) / nrow(data)
 prior_tips_high <- 1 - prior_tips_low
 print(prior_total_high)
-likelihood_tips_high_given_total_high <- sum(chicago_taxi$tips > tips_threshold & chicago_taxi$total > 50) / sum(chicago_taxi$total > 50)
+likelihood_tips_high_given_total_high <- sum(data$tips > tips_threshold & data$total > 50) / sum(data$total > 50)
 print(likelihood_tips_high_given_total_high)
-likelihood_tips_high_given_total_low <- sum(chicago_taxi$tips > tips_threshold & chicago_taxi$total <= 50) / sum(chicago_taxi$total <= 50)
+likelihood_tips_high_given_total_low <- sum(data$tips > tips_threshold & data$total <= 50) / sum(data$total <= 50)
 print(likelihood_tips_high_given_total_low)
 posterior_tips_high_given_total <- (likelihood_tips_high_given_total_high * prior_tips_high) / denominator
 cat("Posterior Probability of Higher Tips given Total > 50:", posterior_tips_high_given_total, "\n")
